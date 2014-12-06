@@ -34,6 +34,30 @@ def serialize(req, resp, resource):
     resp.body = json.dumps(req.context['doc'])
 
 
+def get_data_by_id(idn=None):
+    if idn is None:
+        return False
+    collection = alerts.Collection()
+    try:
+        error = ""
+        data = collection.collection.find_one(ObjectId(idn))
+    except Exception as e:
+        data = None
+        error = e.message
+
+    if data is not None and data is not "":
+        data["_id"] = str(data["_id"])
+        data["alertid"] = data["_id"]
+    else:
+        data = False
+        error = "Not found"
+
+    return {
+        "data": data,
+        "error": error,
+    }
+
+
 class Collection(BaseCollection):
 
     """
@@ -92,21 +116,30 @@ class Collection(BaseCollection):
     """
     Alerts listings/feeds
     /alerts/feeds/?zip=1605
+    /alerts/?id=1
     """
     def on_get(self, req, resp):
 
         resp.status = falcon.HTTP_200
-        collection = alerts.Collection()
-        cursor = collection.collection.find({"zip": req.get_param('zip') or 1605})
-        json_result = []
-        for data in cursor:
-            data["_id"] = str(data["_id"])
-            json_result.append(data)
+        if req.get_param("id") is not None:
+            data_dict = get_data_by_id(req.get_param("id"))
+            json_result = data_dict["data"]
+            error = data_dict["error"]
+        else:
+
+            collection = alerts.Collection()
+            cursor = collection.collection.find({"zip": req.get_param('zip') or 1605})
+            json_result = []
+            error = ""
+            for data in cursor:
+                data["_id"] = str(data["_id"])
+                data["alertid"] = data["_id"]
+                json_result.append(data)
 
         self.body = {
             "status": resp.status,
             "result": json_result,
-            "error": ""
+            "error": error
         }
         resp.body = json.dumps(self.body)
 
@@ -120,19 +153,7 @@ class Object(BaseObject):
     def on_get(self, req, resp, idn):
 
         resp.status = falcon.HTTP_200
-        collection = alerts.Collection()
-        try:
-            error = ""
-            data = collection.collection.find_one(ObjectId(idn))
-        except Exception as e:
-            data = None
-            error = e.message
-
-        if data is not None and data is not "":
-            data["_id"] = str(data["_id"])
-        else:
-            data = False
-            error = "Not found"
+        data_dict = get_data_by_id(idn)
 
         """
         # "result": {
@@ -150,9 +171,10 @@ class Object(BaseObject):
         #       "userid": 1
         # },
         """
+
         self.body = {
             "status": resp.status,
-            "result": data,
-            "error": error
+            "result": data_dict["data"],
+            "error": data_dict["error"]
         }
         resp.body = json.dumps(self.body)
