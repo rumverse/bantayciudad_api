@@ -1,6 +1,8 @@
 import falcon
 api = application = falcon.API()
-from resources import events
+from resources import alerts
+from resources import users
+from resources import location
 
-api.add_route("/events", events.Collection())
-api.add_route("/events/{idn}", events.Object())
+api.add_route("/alerts", alerts.Collection())
+api.add_route("/alerts/id/{idn}", alerts.Object())
