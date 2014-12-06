@@ -35,22 +35,27 @@ class Collection(BaseCollection):
 
 class Object(BaseObject):
 
-    def on_get(self, req, resp, idn):
+    def on_get(self, req, resp):
 
         resp.status = falcon.HTTP_200
         self.body = {
             "status": resp.status,
             "result": {
-                  "alertid": idn,
-                  "description": "Traffic Accident with Bus and Jeepney",
-                  "zip": 1605,
-                  "latitude": 121.45,
-                  "longitude": 54.23,
-                  "severity": "warning",
-                  "type": "traffic",
-                  "created": 1417849697,
+                  "locationid": 1,
+                  "zip": 1226,
+                  "fulltext_location": "Legaspi Village, Makati City, PH",
+                  "safety_score": {
+                      "overall": 0.98,
+                      "traffic": 0.50,
+                      "violence": 0.50,
+                      "drugs": 0.70,
+                      "fire": 0.80,
+                      "disaster": 0.90
+                  },
+                  "safety_message": "Relatively safe, you can walk around",
+                  "created": 1417867943,
                   "username": "rex@onvolo.com",
-                  "user_type": "authority"
+                  "userid": 1
             },
             "error": ""
         }
