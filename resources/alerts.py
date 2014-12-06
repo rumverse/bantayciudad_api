@@ -78,13 +78,55 @@ class Collection(BaseCollection):
             resp.status = falcon.HTTP_200
             resp.body = json.dumps(self.body)
 
-    def on_get(self, req, resp, parms):
+    def on_get(self, req, resp):
 
         resp.status = falcon.HTTP_200
-
         self.body = {
             "status": resp.status,
-            "result": False,
+            "result": [
+                {
+                  "alertid": 1,
+                  "description": "Traffic Accident with Bus and Jeepney",
+                  "zip": 1226,
+                  "latitude": 121.45,
+                  "longitude": 54.23,
+                  "severity": "info",
+                  "type": "traffic",
+                  "created": 1417849697,
+                  "username": "rex@onvolo.com",
+                  "user_type": "authority",
+                  "photo": "http://myimages.com/id/1&severity=warning&type=traffic",
+                  "userid": 1
+                },
+                {
+                  "alertid": 2,
+                  "description": "Traffic Accident with Bus and Jeepney",
+                  "zip": 1226,
+                  "latitude": 121.45,
+                  "longitude": 54.26,
+                  "severity": "warning",
+                  "type": "traffic",
+                  "created": 1417849697,
+                  "username": "rex@onvolo.com",
+                  "user_type": "authority",
+                  "photo": "http://myimages.com/id/1&severity=warning&type=traffic",
+                  "userid": 1
+                },
+                {
+                  "alertid": 3,
+                  "description": "Traffic Accident with Bus and Jeepney",
+                  "zip": 1226,
+                  "latitude": 121.45,
+                  "longitude": 54.25,
+                  "severity": "emergency",
+                  "type": "traffic",
+                  "created": 1417849697,
+                  "username": "rex@onvolo.com",
+                  "user_type": "authority",
+                  "photo": "http://myimages.com/id/1&severity=warning&type=traffic",
+                  "userid": 1
+                }
+            ],
             "error": ""
         }
         resp.body = json.dumps(self.body)
