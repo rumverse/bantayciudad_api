@@ -32,7 +32,7 @@ def serialize(req, resp, resource):
 
 class Collection(BaseCollection):
 
-    def on_post(self, req, resp, params):
+    def on_post(self, req, resp):
 
         try:
             resp.status = falcon.HTTP_200
