@@ -1,4 +1,4 @@
-__author__ = 'onvolo'
+__author__ = 'rumverse'
 from sqlalchemy import Table, Column
 from sqlalchemy import Integer, Numeric, String
 from sqlalchemy.orm import scoped_session, session
@@ -12,15 +12,6 @@ config = {
         "password": "",
         "host": "localhost",
         "port": 3306,
-        "database": "gateseer",
+        "database": "bantayciudad",
     }
 }
-
-engine = create_engine("%s://%s:%s@%s:%s/%s" % (
-    config["db"]["driver"],
-    config["db"]["username"],
-    config["db"]["password"],
-    config["db"]["host"],
-    config["db"]["port"],
-    config["db"]["database"]))
-mysql_session = Session(bind=engine)

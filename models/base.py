@@ -7,7 +7,7 @@ This is an EVENT type resource, which captures all event types (entry, exit etc)
 """
 import sys
 sys.path.append("../")
-from gateseer.db import *
+from bantayciudad.db import *
 import pymongo
 
 """

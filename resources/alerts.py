@@ -3,36 +3,30 @@
 import falcon
 import json
 from base import Collection as BaseCollection, Object as BaseObject
-from models import events
+from models import alerts
 import logging
 
 class Collection(BaseCollection):
 
     def on_post(self, req, resp):
+
         try:
             resp.status = falcon.HTTP_200
-            event_obj = events.Object()
-            idn = req.get_param("id") or None
-            event_obj.set_id(idn)
-            idn = event_obj.save()
-            del event_obj
 
             self.body = {
-                'data': {
-                    'id': str(idn)
+                "status": resp.status,
+                "result": {
+                    "alertid": 1
                 },
-                'status': resp.status,
-                'success': True,
-                'error_msg': False
+                "error": ""
             }
             resp.body = json.dumps(self.body)
 
         except Exception as e:
 
-            self.body["data"] = False
+            self.body["result"] = False
             self.body["status"] = falcon.HTTP_500
-            self.body["success"] = False
-            self.body["error_msg"] = e.message
+            self.body["error"] = e.message
 
             logging.error(e.message)
             resp.status = falcon.HTTP_200
@@ -42,5 +36,22 @@ class Collection(BaseCollection):
 class Object(BaseObject):
 
     def on_get(self, req, resp, idn):
-        events.Object.get(idn)
+
+        resp.status = falcon.HTTP_200
+        self.body = {
+            "status": resp.status,
+            "result": {
+                  "alertid": idn,
+                  "description": "Traffic Accident with Bus and Jeepney",
+                  "zip": 1605,
+                  "latitude": 121.45,
+                  "longitude": 54.23,
+                  "severity": "warning",
+                  "type": "traffic",
+                  "created": 1417849697,
+                  "username": "rex@onvolo.com",
+                  "user_type": "authority"
+            },
+            "error": ""
+        }
         resp.body = json.dumps(self.body)

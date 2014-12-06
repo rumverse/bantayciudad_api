@@ -1,25 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """
-This is an EVENT type resource, which captures all event types (entry, exit etc) from a tracked entity
-(i.e User, Student, Truck etc).
 """
-import elasticsearch
 import pymongo
 from base import Collection as BaseCollection, Object as BaseObject
 import datetime
-# import logging
-from gateseer.db import Column, Integer, String, mysql_session
-from gateseer import logger
+import logging
+from bantayciudad import logger
 
 class Collection(BaseCollection):
 
     client = None
     database = None
     collection = None
-    db_name = 'gateseer_core'
-    collection_name = 'entries'
+    db_name = 'bantayciudad_core'
+    collection_name = 'alerts'
 
     def __init__(self, **kw):
 
@@ -30,16 +25,7 @@ class Collection(BaseCollection):
 """
     This class is an SQLAlchemy ORM class object
 """
-class Event(BaseObject):
-
-    __tablename__ = 'events'
-
-    id = Column(Integer, primary_key=True)
-    uid = Column(String)
-    event_type = Column(String)
-    sentry_id = Column(Integer)
-    time = Column(Integer)
-    status = Column(String)
+class Item(BaseObject):
 
     def __init__(self, *args, **kwargs):
         BaseObject.__init__(self, args, kwargs)
@@ -94,7 +80,7 @@ class Event(BaseObject):
 
 if __name__ == "__main__":
 
-    obj = Event(id='1', uid='1', event_type='1', status='1', sentry_id='1', time=12344555555)
+    obj = Item(id='1', uid='1', event_type='1', status='1', sentry_id='1', time=12344555555)
     print obj.save()
     # obj.status = 1
     # obj.save()

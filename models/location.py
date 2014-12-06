@@ -10,15 +10,15 @@ import pymongo
 from base import Collection as BaseCollection, Object as BaseObject
 import datetime
 # import logging
-from gateseer.db import Column, Integer, String, mysql_session
-from gateseer import logger
+from bantayciudad.db import Column, Integer, String, mysql_session
+from bantayciudad import logger
 
 class Collection(BaseCollection):
 
     client = None
     database = None
     collection = None
-    db_name = 'gateseer_core'
+    db_name = 'bantayciudad_core'
     collection_name = 'entries'
 
     def __init__(self, **kw):
