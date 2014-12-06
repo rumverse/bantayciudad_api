@@ -33,7 +33,7 @@ def serialize(req, resp, resource):
 class Collection(BaseCollection):
 
     @falcon.before(deserialize)
-    def on_post(self, req, resp):
+    def on_post(self, req, resp, params):
 
         try:
             resp.status = falcon.HTTP_200
@@ -50,7 +50,7 @@ class Collection(BaseCollection):
                 "longitude": req.get_param("longitude") or 121.02562,
                 "photo": req.get_param("photo") or None,
                 "severity": req.get_param("severity") or None,
-                "type": req.get_param("type") or None,
+                "type": req.get_param("type") or None, # traffic, fire, violence, medical, disaster, crime, None (as in nil), community, announcement
                 "user_type": req.get_param("user_type") or "normal", #normal, authority, system
                 "userid": req.get_param("user_id") or None,
                 "username": req.get_param("username") or None,
