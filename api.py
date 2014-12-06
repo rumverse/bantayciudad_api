@@ -11,3 +11,5 @@ api.add_route("/users", users.Collection())
 api.add_route("/users/id/{idn}", users.Object())
 api.add_route("/location", location.Object())
 api.add_route("/users/id/{idn}", users.Object())
+api.add_route("/getalert", alerts.Collection())
+
