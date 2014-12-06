@@ -41,16 +41,14 @@ class Object(BaseObject):
         self.body = {
             "status": resp.status,
             "result": {
-                  "alertid": idn,
-                  "description": "Traffic Accident with Bus and Jeepney",
-                  "zip": 1605,
-                  "latitude": 121.45,
-                  "longitude": 54.23,
-                  "severity": "warning",
-                  "type": "traffic",
-                  "created": 1417849697,
-                  "username": "rex@onvolo.com",
-                  "user_type": "authority"
+                "username": "rex@onvolo.com",
+                "fname": "Rex",
+                "lname": "Mupas",
+                "userid": 1,
+                "created": 1417849697,
+                "lastmodified": 1417849697,
+                "type": "authority",
+                "source": "twitter"
             },
             "error": ""
         }
