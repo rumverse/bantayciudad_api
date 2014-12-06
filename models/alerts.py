@@ -3,7 +3,7 @@
 """
 """
 import pymongo
-from base import Collection as BaseCollection, Object as BaseObject
+from base import Collection as BaseCollection, Item as BaseItem
 import datetime
 import logging
 from bantayciudad import logger
@@ -25,10 +25,10 @@ class Collection(BaseCollection):
 """
     This class is an SQLAlchemy ORM class object
 """
-class Item(BaseObject):
+class Item(BaseItem):
 
     def __init__(self, *args, **kwargs):
-        BaseObject.__init__(self, args, kwargs)
+        logging.log(logging.INFO, "initialized")
 
     def set_id(self, idn=None):
 

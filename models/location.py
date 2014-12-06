@@ -7,10 +7,9 @@ This is an EVENT type resource, which captures all event types (entry, exit etc)
 """
 import elasticsearch
 import pymongo
-from base import Collection as BaseCollection, Object as BaseObject
+from base import Collection as BaseCollection, Item as BaseItem
 import datetime
-# import logging
-from bantayciudad.db import Column, Integer, String, mysql_session
+import logging
 from bantayciudad import logger
 
 class Collection(BaseCollection):
@@ -19,7 +18,7 @@ class Collection(BaseCollection):
     database = None
     collection = None
     db_name = 'bantayciudad_core'
-    collection_name = 'entries'
+    collection_name = 'location'
 
     def __init__(self, **kw):
 
@@ -30,19 +29,10 @@ class Collection(BaseCollection):
 """
     This class is an SQLAlchemy ORM class object
 """
-class Event(BaseObject):
-
-    __tablename__ = 'events'
-
-    id = Column(Integer, primary_key=True)
-    uid = Column(String)
-    event_type = Column(String)
-    sentry_id = Column(Integer)
-    time = Column(Integer)
-    status = Column(String)
+class Item(BaseItem):
 
     def __init__(self, *args, **kwargs):
-        BaseObject.__init__(self, args, kwargs)
+        logging.log(logging.INFO, "init")
 
     def set_id(self, idn=None):
 

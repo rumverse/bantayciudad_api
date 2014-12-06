@@ -7,9 +7,7 @@ This is an EVENT type resource, which captures all event types (entry, exit etc)
 """
 import sys
 sys.path.append("../")
-from bantayciudad.db import *
 import pymongo
-
 """
     This class
 """
@@ -25,8 +23,7 @@ class Collection(object):
         self.database = self.client.test
         self.collection = self.database.test
 
-Base = declarative_base()
-class Object(Base):
+class Item():
     """
     This is a MongoCollection object instance
     """
