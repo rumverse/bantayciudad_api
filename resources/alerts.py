@@ -5,18 +5,64 @@ import json
 from base import Collection as BaseCollection, Object as BaseObject
 from models import alerts
 import logging
+import time
+
+def deserialize(req, resp, resource, params):
+    # req.stream corresponds to the WSGI wsgi.input environ variable,
+    # and allows you to read bytes from the request body.
+    #
+    # See also: PEP 3333
+    body = req.stream.read()
+    if not body:
+        raise falcon.HTTPBadRequest('Empty request body',
+                                    'A valid JSON document is required.')
+
+    try:
+        params['doc'] = json.loads(body.decode('utf-8'))
+
+    except (ValueError, UnicodeDecodeError):
+        raise falcon.HTTPError(falcon.HTTP_753,
+                               'Malformed JSON',
+                               'Could not decode the request body. The '
+                               'JSON was incorrect or not encoded as UTF-8.')
+
+
+def serialize(req, resp, resource):
+    resp.body = json.dumps(req.context['doc'])
 
 class Collection(BaseCollection):
 
+    @falcon.before(deserialize)
     def on_post(self, req, resp):
 
         try:
             resp.status = falcon.HTTP_200
+            """
+            api_key=1234&description=Traffic Accident with Bus and Jeepney&zip=1605
+            &latitude=121.65&longitude=54.1212
+            &photo=http://myimages.com/id/1&severity=warning&type=traffic
+            &user_type=authority&userid=1"
+            """
+            data = {
+                "description": req.get_param("description") or "",
+                "zip": req.get_param("zip") or "",
+                "latitude": req.get_param("latitude") or 14.551426,
+                "longitude": req.get_param("longitude") or 121.02562,
+                "photo": req.get_param("photo") or None,
+                "severity": req.get_param("severity") or None,
+                "type": req.get_param("type") or None,
+                "user_type": req.get_param("user_type") or "normal", #normal, authority, system
+                "userid": req.get_param("user_id") or None,
+                "username": req.get_param("username") or None,
+                "created": int(time.time())
+            }
+
+            mongo_id = alerts.Collection.collection.insert(data)
 
             self.body = {
                 "status": resp.status,
                 "result": {
-                    "alertid": 1
+                    "alertid": mongo_id
                 },
                 "error": ""
             }
