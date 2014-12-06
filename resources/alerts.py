@@ -37,10 +37,10 @@ class Collection(BaseCollection):
         try:
             resp.status = falcon.HTTP_200
             """
-            api_key=1234&description=Traffic Accident with Bus and Jeepney&zip=1605
-            &latitude=121.65&longitude=54.1212
-            &photo=http://myimages.com/id/1&severity=warning&type=traffic
-            &user_type=authority&userid=1"
+                api_key=1234&description=Traffic Accident with Bus and Jeepney&zip=1605
+                &latitude=121.65&longitude=54.1212
+                &photo=http://myimages.com/id/1&severity=warning&type=traffic
+                &user_type=authority&userid=1"
             """
             data = {
                 "description": req.get_param("description") or "",
@@ -48,7 +48,7 @@ class Collection(BaseCollection):
                 "latitude": req.get_param("latitude") or 14.551426,
                 "longitude": req.get_param("longitude") or 121.02562,
                 "photo": req.get_param("photo") or None,
-                "severity": req.get_param("severity") or None,
+                "severity": req.get_param("severity") or None, #info, warning, emergency
                 "type": req.get_param("type") or None, # traffic, fire, violence, medical, disaster, crime, None (as in nil), community, announcement
                 "user_type": req.get_param("user_type") or "normal", #normal, authority, system
                 "userid": req.get_param("user_id") or None,
@@ -56,12 +56,13 @@ class Collection(BaseCollection):
                 "created": int(time.time())
             }
 
-            mongo_id = alerts.Collection.collection.insert(data)
+            collection = alerts.Collection()
+            mongo_id = collection.collection.insert(data)
 
             self.body = {
                 "status": resp.status,
                 "result": {
-                    "alertid": mongo_id
+                    "alertid": str(mongo_id)
                 },
                 "error": ""
             }
