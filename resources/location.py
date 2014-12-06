@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# resources/location.py
+
 import falcon
 import json
 from base import Collection as BaseCollection, Object as BaseObject
