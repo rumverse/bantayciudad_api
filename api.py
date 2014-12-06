@@ -6,7 +6,7 @@ from resources import location
 
 api.add_route("/alerts", alerts.Collection())
 api.add_route("/alerts/id/{idn}", alerts.Object())
-api.add_route("/alerts/search/", alerts.Collection())
+api.add_route("/alerts/feeds/", alerts.Collection())
 api.add_route("/users", users.Collection())
 api.add_route("/users/id/{idn}", users.Object())
 api.add_route("/location", location.Collection())

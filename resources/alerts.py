@@ -78,6 +78,18 @@ class Collection(BaseCollection):
             resp.status = falcon.HTTP_200
             resp.body = json.dumps(self.body)
 
+    def on_get(self, req, resp, parms):
+
+        resp.status = falcon.HTTP_200
+
+        self.body = {
+            "status": resp.status,
+            "result": False,
+            "error": ""
+        }
+        resp.body = json.dumps(self.body)
+
+
 
 class Object(BaseObject):
 
@@ -96,7 +108,9 @@ class Object(BaseObject):
                   "type": "traffic",
                   "created": 1417849697,
                   "username": "rex@onvolo.com",
-                  "user_type": "authority"
+                  "user_type": "authority",
+                  "photo": "http://myimages.com/id/1&severity=warning&type=traffic",
+                  "userid": 1
             },
             "error": ""
         }
