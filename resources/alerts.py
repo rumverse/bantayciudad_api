@@ -121,12 +121,18 @@ class Object(BaseObject):
 
         resp.status = falcon.HTTP_200
         collection = alerts.Collection()
-        data = collection.collection.find_one(ObjectId(idn))
+        try:
+            error = ""
+            data = collection.collection.find_one(ObjectId(idn))
+        except Exception as e:
+            data = None
+            error = e.message
 
-        if data is not None:
+        if data is not None and data is not "":
             data["_id"] = str(data["_id"])
         else:
             data = False
+            error = "Not found"
 
         """
         # "result": {
@@ -147,6 +153,6 @@ class Object(BaseObject):
         self.body = {
             "status": resp.status,
             "result": data,
-            "error": ""
+            "error": error
         }
         resp.body = json.dumps(self.body)
