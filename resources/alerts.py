@@ -32,7 +32,6 @@ def serialize(req, resp, resource):
 
 class Collection(BaseCollection):
 
-    @falcon.before(deserialize)
     def on_post(self, req, resp, params):
 
         try:
