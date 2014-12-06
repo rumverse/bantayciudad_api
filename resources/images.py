@@ -1,7 +1,7 @@
 __author__ = 'rumverse'
 import os
 import time
-
+import logging, json
 import falcon
 
 ALLOWED_IMAGE_TYPES = (
@@ -50,6 +50,18 @@ class Collection(object):
 
         resp.status = falcon.HTTP_201
         resp.location = '/images/' + filename
+
+        self.body = {
+            "status": resp.status,
+            "result": {
+                "uri": str(resp.location),
+                "created": int(time.time())
+            },
+            "error": ""
+        }
+
+        resp.status = falcon.HTTP_200
+        resp.body = json.dumps(self.body)
 
 
 class Item(object):
