@@ -34,6 +34,11 @@ def serialize(req, resp, resource):
     resp.body = json.dumps(req.context['doc'])
 
 
+def get_hash_tags(s):
+    import re
+    return re.findall(r"#(\w+)", s)
+
+
 def get_data_by_id(idn=None):
     if idn is None:
         return False
@@ -77,6 +82,13 @@ class Collection(BaseCollection):
                 &photo=http://myimages.com/id/1&severity=warning&type=traffic
                 &user_type=authority&userid=1"
             """
+
+            hashtags = get_hash_tags(req.get_param("description"))
+
+            alert_type = "simple"
+            if hashtags is not None:
+                alert_type = str(hashtags[0]).lower() or "simple"
+
             data = {
                 "description": req.get_param("description"),
                 "zip": req.get_param("zip") or "",
@@ -84,7 +96,7 @@ class Collection(BaseCollection):
                 "longitude": req.get_param("longitude") or 121.02562,
                 "photo": req.get_param("photo") or None,
                 "severity": req.get_param("severity") or None, #info, warning, emergency
-                "type": req.get_param("type") or None, #traffic, fire, violence, medical, disaster, crime, theft None (as in nil), community, announcement
+                "type": req.get_param("type") or alert_type, #traffic, fire, violence, medical, disaster, crime, theft, simple (as in nil), community, announcement
                 "user_type": req.get_param("user_type") or "normal", #normal, authority, system
                 "userid": req.get_param("user_id") or None,
                 "username": req.get_param("username") or None,
