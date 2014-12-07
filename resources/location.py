@@ -47,12 +47,12 @@ class Object(BaseObject):
                   "zip": 1226,
                   "fulltext_location": "Legaspi Village, Makati City, PH",
                   "safety_score": {
-                      "overall": 0.98,
-                      "traffic": 0.50,
-                      "violence": 0.50,
-                      "drugs": 0.70,
-                      "fire": 0.80,
-                      "disaster": 0.90
+                      "overall": 99,
+                      "traffic accidents": 100,
+                      "violence": 100,
+                      "drugs": 100,
+                      "fire": 100,
+                      "disaster": 90
                   },
                   "safety_message": "Relatively safe, you can walk around",
                   "created": 1417867943,

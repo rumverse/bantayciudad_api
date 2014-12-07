@@ -5,7 +5,7 @@
 import falcon
 import json
 from base import Collection as BaseCollection, Object as BaseObject
-from models import alerts
+from models import alerts, location
 import logging
 import time
 from bson.objectid import ObjectId

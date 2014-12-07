@@ -1,16 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-"""
-This is an EVENT type resource, which captures all event types (entry, exit etc) from a tracked entity
-(i.e User, Student, Truck etc).
-"""
-import elasticsearch
+# models/location.py
 import pymongo
 from base import Collection as BaseCollection, Item as BaseItem
-import datetime
+import time
 import logging
 from bantayciudad import logger
+from bson.objectid import ObjectId
 
 class Collection(BaseCollection):
 
@@ -26,66 +22,43 @@ class Collection(BaseCollection):
         self.database = self.client[self.db_name]
         self.collection = self.database[self.collection_name]
 
-"""
-    This class is an SQLAlchemy ORM class object
-"""
+    def recalculate_score(self, id, params):
+
+        location = self.collection.find_one(ObjectId(id))
+        if location is not None:
+            ## calc here
+            if "safety_score" in location:
+                for i in params:
+                    if i in location:
+                        location[i] += 1
+                    else:
+                        location[i] = 1
+            else:
+                for i in params:
+                    location["safety_score"] = {
+                        i: 1
+                    }
+            self.collection.save({"_id": ObjectId(id)}, location)
+
+        else:
+            return False
+
+    def add_score(self, zipc=None, fulltext_location=None, safety_score={}):
+
+        timenow = int(time.time())
+        location = {
+            "zip": zipc,
+            "fulltext_location": fulltext_location,
+            "safety_score": safety_score,
+            "created": timenow
+        }
+
+        return self.collection.insert(location)
+
+
+
+
 class Item(BaseItem):
 
     def __init__(self, *args, **kwargs):
-        logging.log(logging.INFO, "init")
-
-    def set_id(self, idn=None):
-
-        if idn is not None:
-            self.id = idn
-        return self
-
-    def set_event_type(self, event_type="entry"):
-
-        self.event_type = event_type
-        return self
-
-    def set_sentry_id(self, sentry_id=None):
-
-        self.sentry_id = sentry_id
-        return self
-
-    def set_uid(self, uid=None):
-
-        self.uid = uid
-        return self
-
-    def set_status(self, status=None):
-
-        self.status = status
-        return self
-
-    @logger.log
-    def save(self, force_insert=True, only=False ):
-
-        data = dict(self.get_data())
-        ret = self._collection.insert(data)
-
-        return ret
-
-    @logger.log
-    def get(self, idn):
-
-        ret = self._collection.find_one(idn)
-        if ret is None or len(ret) <= 0:
-            self.id = ret["_id"]
-            self.uid = ret["uid"]
-            self.sentry_id = ret["sentry_id"]
-            self.event_type = ret["event_type"]
-            self.time = ret["time"]
-            self.status = ret["status"]
-        return self
-
-
-if __name__ == "__main__":
-
-    obj = Event(id='1', uid='1', event_type='1', status='1', sentry_id='1', time=12344555555)
-    print obj.save()
-    # obj.status = 1
-    # obj.save()
-
+        logging.log(logging.INFO, "initialized")
