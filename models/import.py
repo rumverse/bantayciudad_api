@@ -4,7 +4,7 @@ import csv
 import alerts
 import time
 
-with open('../data/alerts.csv', 'rU') as csvfile:
+with open('../data/alerts_data.csv', 'rU') as csvfile:
     reader = csv.DictReader(csvfile)
     alert_collection = alerts.Collection()
     for row in reader:
