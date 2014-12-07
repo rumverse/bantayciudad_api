@@ -146,7 +146,7 @@ class Collection(BaseCollection):
             cursor = collection.collection.find({
                 "zip": req.get_param('zip') or 1226,
                 "created": {'$gte': int(time.time()) - (3 * 60 * 60)}
-            })
+            }).sort({"created": 1})
             json_result = []
             error = ""
             for data in cursor:
