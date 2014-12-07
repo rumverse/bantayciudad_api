@@ -83,11 +83,14 @@ class Collection(BaseCollection):
                 &user_type=authority&userid=1"
             """
 
-            hashtags = get_hash_tags(req.get_param("description"))
+            if req.get_param("description") is not None:
+                hashtags = get_hash_tags(req.get_param("description"))
+            else:
+                hashtags = None
 
             alert_type = "simple"
             if hashtags is not None:
-                alert_type = str(hashtags[0]).lower() or "simple"
+                 alert_type = str(hashtags[0]).lower() or "simple"
 
             data = {
                 "description": req.get_param("description"),
