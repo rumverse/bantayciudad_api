@@ -7,7 +7,7 @@ import json
 from base import Collection as BaseCollection, Object as BaseObject
 from models import alerts, location
 import logging
-import time
+import time, pymongo
 from bson.objectid import ObjectId
 
 def deserialize(req, resp, resource, params):
@@ -146,7 +146,7 @@ class Collection(BaseCollection):
             cursor = collection.collection.find({
                 "zip": req.get_param('zip') or 1226,
                 "created": {'$gte': int(time.time()) - (3 * 60 * 60)}
-            }).sort({"created": 1})
+            }).sort("created", pymongo.ASCENDING)
             json_result = []
             error = ""
             for data in cursor:
