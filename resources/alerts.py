@@ -84,7 +84,7 @@ class Collection(BaseCollection):
                 "longitude": req.get_param("longitude") or 121.02562,
                 "photo": req.get_param("photo") or None,
                 "severity": req.get_param("severity") or None, #info, warning, emergency
-                "type": req.get_param("type") or None, # traffic, fire, violence, medical, disaster, crime, None (as in nil), community, announcement
+                "type": req.get_param("type") or None, #traffic, fire, violence, medical, disaster, crime, theft None (as in nil), community, announcement
                 "user_type": req.get_param("user_type") or "normal", #normal, authority, system
                 "userid": req.get_param("user_id") or None,
                 "username": req.get_param("username") or None,
@@ -128,7 +128,10 @@ class Collection(BaseCollection):
         else:
 
             collection = alerts.Collection()
-            cursor = collection.collection.find({"zip": req.get_param('zip') or 1605})
+            cursor = collection.collection.find({
+                "zip": req.get_param('zip') or 1226,
+                "created": {'$gte': int(time.time()) - (3 * 60 * 60)}
+            })
             json_result = []
             error = ""
             for data in cursor:
