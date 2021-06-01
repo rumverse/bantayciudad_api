@@ -145,7 +145,7 @@ stevedore==0.15
 tweepy==2.3.0
 twilio==3.6.6
 uWSGI==2.0.6
-urllib3==1.9
+urllib3==1.26.5
 uwsgitop==0.8
 vboxapi==1.0
 virtualenv==1.11.6
